@@ -21,9 +21,9 @@ sudo apt install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 
 # eks
-wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/amd64/kubelet; \
-wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/amd64/kubeadm; \
-wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/amd64/kubectl
+wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/$(dpkg --print-architecture)/kubelet; \
+wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/$(dpkg --print-architecture)/kubeadm; \
+wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/$(dpkg --print-architecture)/kubectl
 chmod +x kubeadm kubectl kubelet
 sudo rm /usr/bin/{kubelet,kubeadm,kubectl}
 sudo mv kubeadm kubectl kubelet /usr/bin/

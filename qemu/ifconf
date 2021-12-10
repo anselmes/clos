@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# create macvtap links - core
+# create macvtap links - unassigned
 sudo ip link add link eno1 name macvtap0 type macvtap mode bridge
 
-# create macvtap links - clos
+# create macvtap links - unassigned
 sudo ip link add link eno1 name macvtap1 type macvtap mode bridge
 
 # create macvtap links - unassigned
@@ -14,7 +14,7 @@ sudo ip link add link eno1 name macvtap3 type macvtap mode bridge
 sudo ip link add link eno1 name macvtap30 type macvtap mode bridge
 sudo ip link add link eno1 name macvtap31 type macvtap mode bridge
 
-# create macvtap links - vyos
+# create macvtap links - unassigned
 sudo ip link add link eno1 name macvtap4 type macvtap mode bridge
 sudo ip link add link eno1 name macvtap40 type macvtap mode bridge
 sudo ip link add link eno1 name macvtap41 type macvtap mode bridge

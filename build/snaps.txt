@@ -1,0 +1,5 @@
+lxd
+multipass
+uboot-tools
+ubuntu-frame
+wpe-webkit-mir-kiosk

@@ -1,0 +1,2 @@
+# clos
+CloudOS base image

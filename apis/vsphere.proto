@@ -1,0 +1,15 @@
+syntax = "proto3";
+option go_package="cloudos/api";
+
+package api;
+
+message VSphere {
+    string server = 1;
+    string username = 2;
+    string password = 3;
+    string datacenter = 4;
+    string pool = 5;
+    string datastore = 6;
+    string folder = 7;
+    string network = 8;
+}

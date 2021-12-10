@@ -1,0 +1,11 @@
+syntax = "proto3";
+option go_package="cloudos/api";
+
+package api;
+
+message Metadata {}
+message Status {}
+
+service Config {
+    rpc GenerateConfig (Metadata) returns (Status) {}
+}

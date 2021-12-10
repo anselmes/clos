@@ -1,0 +1,19 @@
+#!/bin/bash
+
+qemu-system-x86_64 \
+    -accel tcg \
+    -smp 2 \
+    -m 4g \
+    -rtc base=localtime \
+    -device virtio-rng \
+    -device virtio-balloon \
+    -device virtio-vga \
+    -device usb-ehci,id=usb0 \
+    -device usb-tablet,bus=usb0.0 \
+    -device e1000,netdev=eth0,mac=aa:aa:bb:bb:cc:cc \
+    -netdev user,id=eth0,hostfwd=tcp::1022-:22,hostfwd=tcp::1080-:80,hostfwd=tcp::1043-:443 \
+    -drive id=id-$(uuidgen),if=pflash,readonly=on,unit=0,file=${FIRMWARE} \
+    -device virtio-blk,drive=hd0 \
+    -drive id=hd0,if=none,cache=none,file=$1 \
+    -boot menu=on \
+    -uuid $(uuidgen)

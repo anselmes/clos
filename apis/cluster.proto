@@ -1,0 +1,10 @@
+syntax = "proto3";
+option go_package="cloudos/api";
+
+package api;
+
+message Cluster {
+    string name = 1;
+    string endpoint = 2;
+    string ssh = 3;
+}

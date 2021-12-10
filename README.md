@@ -1,2 +1,2 @@
 # clos
-CloudOS base image
+CloudOS core image

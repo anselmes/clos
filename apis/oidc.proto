@@ -1,0 +1,11 @@
+syntax = "proto3";
+option go_package="cloudos/api";
+
+package api;
+
+message Oidc {
+    string id = 1;
+    string claim = 2;
+    string prefix = 3;
+    string url = 4;
+}

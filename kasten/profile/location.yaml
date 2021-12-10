@@ -1,0 +1,23 @@
+kind: Profile
+apiVersion: config.kio.kasten.io/v1alpha1
+metadata:
+  name: default
+  namespace: kasten-io
+spec:
+  type: Location
+  locationSpec:
+    type: ObjectStore
+    objectStore:
+      endpoint: minio.default.svc.cluster.local
+      name: kasten
+      objectStoreType: S3
+      path: k10/${CLUSTER_ID}/migration
+      pathType: Directory
+      skipSSLVerify: true
+    credential:
+      secretType: AwsAccessKey
+      secret:
+        apiVersion: v1
+        kind: secret
+        name: ${SECRET_NAME}
+        namespace: kasten-io

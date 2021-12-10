@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# create macvtap links - core
+sudo ip link add link eno1 name macvtap0 type macvtap mode bridge
+
+# create macvtap links - clos
+sudo ip link add link eno1 name macvtap1 type macvtap mode bridge
+
+# create macvtap links - unassigned
+sudo ip link add link eno1 name macvtap2 type macvtap mode bridge
+
+# create macvtap links - panos
+sudo ip link add link eno1 name macvtap3 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap30 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap31 type macvtap mode bridge
+
+# create macvtap links - vyos
+sudo ip link add link eno1 name macvtap4 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap40 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap41 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap42 type macvtap mode bridge
+
+# create macvtap links - sonic
+sudo ip link add link eno1 name macvtap6 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap60 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap61 type macvtap mode bridge
+
+# create macvtap links - nios
+sudo ip link add link eno1 name macvtap9 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap90 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap91 type macvtap mode bridge
+sudo ip link add link eno1 name macvtap92 type macvtap mode bridge
+
+# set macvtap links up
+sudo ip link set macvtap0 up
+sudo ip link set macvtap1 up
+
+sudo ip link set macvtap2 up
+
+sudo ip link set macvtap3 up
+sudo ip link set macvtap30 up
+sudo ip link set macvtap31 up
+
+sudo ip link set macvtap4 up
+sudo ip link set macvtap40 up
+sudo ip link set macvtap41 up
+sudo ip link set macvtap42 up
+
+sudo ip link set macvtap6 up
+sudo ip link set macvtap60 up
+sudo ip link set macvtap61 up
+
+sudo ip link set macvtap9 up
+sudo ip link set macvtap90 up
+sudo ip link set macvtap91 up
+sudo ip link set macvtap92 up

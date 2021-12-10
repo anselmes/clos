@@ -1,0 +1,10 @@
+[Unit]
+Description=CloudOS (/var/cloudos)
+ConditionPathExists=/var/cloudos
+
+[Automount]
+Where=/var/cloudos
+TimeoutIdleSec=10
+
+[Install]
+WantedBy=multi-user.target

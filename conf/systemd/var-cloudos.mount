@@ -1,0 +1,15 @@
+[Unit]
+Description=CloudOS (/var/cloudos)
+DefaultDependencies=no
+Conflicts=umount.target
+Before=local-fs.target umount.target
+After=swap.target
+
+[Mount]
+What=/dev/disk/by-uuid/<UUID>
+Where=/var/cloudos
+Type=xfs
+Options=defaults
+
+[Install]
+WantedBy=multi-user.target

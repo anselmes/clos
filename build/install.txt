@@ -62,3 +62,10 @@ sudo systemctl status snap.wpe-webkit-mir-kiosk.daemon.service
 # cumulus
 docker container create --privileged --restart always --network host --name cumulus -it networkop/cx:4.4.0
 docker container start cumulus
+
+## cumulus - optional if only 1 nic
+## add dummy eth0
+
+ip link add eth0 type dummy
+ip link set eth0 vrf mgmt
+ip link set eth0 up

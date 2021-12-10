@@ -1,0 +1,3 @@
+clos
+
+CloudOS core image

@@ -1,2 +1,3 @@
-# clos
+clos
+
 CloudOS core image

@@ -1,0 +1,161 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: buildpacks
+  namespace: default
+spec:
+  description: >-
+    The Buildpacks pipeline builds source from a Git repository into a container
+    image and pushes it to a registry, using Cloud Native Buildpacks.
+  params:
+    - description: >-
+        The image on which builds will run (must include lifecycle and
+        compatible buildpacks).
+      name: BUILDER_IMAGE
+      type: string
+    - default: 'false'
+      description: >-
+        Whether the builder image is trusted. When false, each build phase is
+        executed in isolation and credentials are only shared with trusted
+        images.
+      name: TRUST_BUILDER
+      type: string
+    - description: The name of where to store the app image.
+      name: APP_IMAGE
+      type: string
+    - description: A git repo url where the source code resides.
+      name: SOURCE_URL
+      type: string
+    - default: ''
+      description: 'The branch, tag or SHA to checkout.'
+      name: SOURCE_REFERENCE
+      type: string
+    - default: ''
+      description: >-
+        A subpath within checked out source where the source to build is
+        located.
+      name: SOURCE_SUBPATH
+      type: string
+    - default: []
+      description: Environment variables to set during _build-time_.
+      name: ENV_VARS
+      type: array
+    - default: web
+      description: The default process type to set on the image.
+      name: PROCESS_TYPE
+      type: string
+    - default: ''
+      description: >-
+        The name of the run image to use (defaults to image specified in
+        builder).
+      name: RUN_IMAGE
+      type: string
+    - default: ''
+      description: The name of the persistent cache image.
+      name: CACHE_IMAGE
+      type: string
+    - default: '1000'
+      description: The user ID of the builder image user.
+      name: USER_ID
+      type: string
+    - default: '1000'
+      description: The group ID of the builder image user.
+      name: GROUP_ID
+      type: string
+  tasks:
+    - name: fetch-from-git
+      params:
+        - name: url
+          value: $(params.SOURCE_URL)
+        - name: revision
+          value: $(params.SOURCE_REFERENCE)
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: source-ws
+    - name: build-trusted
+      params:
+        - name: BUILDER_IMAGE
+          value: $(params.BUILDER_IMAGE)
+        - name: APP_IMAGE
+          value: $(params.APP_IMAGE)
+        - name: SOURCE_SUBPATH
+          value: $(params.SOURCE_SUBPATH)
+        - name: PROCESS_TYPE
+          value: $(params.PROCESS_TYPE)
+        - name: ENV_VARS
+          value:
+            - $(params.ENV_VARS)
+        - name: RUN_IMAGE
+          value: $(params.RUN_IMAGE)
+        - name: CACHE_IMAGE
+          value: $(params.CACHE_IMAGE)
+        - name: USER_ID
+          value: $(params.USER_ID)
+        - name: GROUP_ID
+          value: $(params.GROUP_ID)
+      runAfter:
+        - fetch-from-git
+      taskRef:
+        kind: Task
+        name: buildpacks
+      when:
+        - input: $(params.TRUST_BUILDER)
+          operator: in
+          values:
+            - 'true'
+            - 'yes'
+            - 'TRUE'
+            - 'True'
+      workspaces:
+        - name: source
+          workspace: source-ws
+        - name: cache
+          workspace: cache-ws
+    - name: build-untrusted
+      params:
+        - name: BUILDER_IMAGE
+          value: $(params.BUILDER_IMAGE)
+        - name: APP_IMAGE
+          value: $(params.APP_IMAGE)
+        - name: SOURCE_SUBPATH
+          value: $(params.SOURCE_SUBPATH)
+        - name: ENV_VARS
+          value:
+            - $(params.ENV_VARS)
+        - name: PROCESS_TYPE
+          value: $(params.PROCESS_TYPE)
+        - name: RUN_IMAGE
+          value: $(params.RUN_IMAGE)
+        - name: CACHE_IMAGE
+          value: $(params.CACHE_IMAGE)
+        - name: USER_ID
+          value: $(params.USER_ID)
+        - name: GROUP_ID
+          value: $(params.GROUP_ID)
+      runAfter:
+        - fetch-from-git
+      taskRef:
+        kind: Task
+        name: buildpacks-phases
+      when:
+        - input: $(params.TRUST_BUILDER)
+          operator: notin
+          values:
+            - 'true'
+            - 'yes'
+            - 'TRUE'
+            - 'True'
+      workspaces:
+        - name: source
+          workspace: source-ws
+        - name: cache
+          workspace: cache-ws
+  workspaces:
+    - description: Location where source is stored.
+      name: source-ws
+    - description: Location where cache is stored if CACHE_IMAGE is not provided.
+      name: cache-ws
+      optional: true

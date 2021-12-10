@@ -1,35 +1,49 @@
 #!/bin/bash
 
 # create macvtap links - unassigned
+<<<<<<< HEAD
+sudo ip link add link ${IFNAME} name macvtap0 type macvtap mode bridge
+
+# create macvtap links - unassigned
+sudo ip link add link ${IFNAME} name macvtap1 type macvtap mode bridge
+=======
 sudo ip link add link eno1 name macvtap0 type macvtap mode bridge
 
 # create macvtap links - unassigned
 sudo ip link add link eno1 name macvtap1 type macvtap mode bridge
+>>>>>>> 9f21062fd0d320ca46cdfd5011c164463ce123d5
 
 # create macvtap links - unassigned
-sudo ip link add link eno1 name macvtap2 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap2 type macvtap mode bridge
 
 # create macvtap links - panos
-sudo ip link add link eno1 name macvtap3 type macvtap mode bridge
-sudo ip link add link eno1 name macvtap30 type macvtap mode bridge
-sudo ip link add link eno1 name macvtap31 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap3 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap30 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap31 type macvtap mode bridge
 
 # create macvtap links - unassigned
+<<<<<<< HEAD
+sudo ip link add link ${IFNAME} name macvtap4 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap40 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap41 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap42 type macvtap mode bridge
+=======
 sudo ip link add link eno1 name macvtap4 type macvtap mode bridge
 sudo ip link add link eno1 name macvtap40 type macvtap mode bridge
 sudo ip link add link eno1 name macvtap41 type macvtap mode bridge
 sudo ip link add link eno1 name macvtap42 type macvtap mode bridge
+>>>>>>> 9f21062fd0d320ca46cdfd5011c164463ce123d5
 
 # create macvtap links - sonic
-sudo ip link add link eno1 name macvtap6 type macvtap mode bridge
-sudo ip link add link eno1 name macvtap60 type macvtap mode bridge
-sudo ip link add link eno1 name macvtap61 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap6 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap60 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap61 type macvtap mode bridge
 
 # create macvtap links - nios
-sudo ip link add link eno1 name macvtap9 type macvtap mode bridge
-sudo ip link add link eno1 name macvtap90 type macvtap mode bridge
-sudo ip link add link eno1 name macvtap91 type macvtap mode bridge
-sudo ip link add link eno1 name macvtap92 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap9 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap90 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap91 type macvtap mode bridge
+sudo ip link add link ${IFNAME} name macvtap92 type macvtap mode bridge
 
 # set macvtap links up
 sudo ip link set macvtap0 up

@@ -31,18 +31,18 @@ sudo apt install -y \
   thin-provisioning-tools
 
 # netq-agent
-curl https://apps3.cumulusnetworks.com/setup/cumulus-apps-deb.pubkey | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apps3.cumulusnetworks.com/repos/deb bionic netq-latest"
+curl -k https://apps3.cumulusnetworks.com/setup/cumulus-apps-deb.pubkey | sudo apt-key add -
+sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apps3.cumulusnetworks.com/repos/deb $(lsb_release -cs) netq-latest"
 apt update
 sudo apt install -y netq-agent
 
 # snaps
 sudo snap install \
   lxd \
-  multipass \
   ubuntu-frame \
   wpe-webkit-mir-kiosk \
   uboot-tools
+sudo snap install --candidate multipass
 
 # upgrade
 apt list --upgradable

@@ -1,0 +1,64 @@
+# packages
+wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/$(dpkg --print-architecture)/kubelet; \
+wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/$(dpkg --print-architecture)/kubeadm; \
+wget https://distro.eks.amazonaws.com/kubernetes-1-19/releases/4/artifacts/kubernetes/v1.19.8/bin/linux/$(dpkg --print-architecture)/kubectl
+chmod +x kubeadm kubectl kubelet
+sudo rm /usr/bin/{kubelet,kubeadm,kubectl}
+sudo mv kubeadm kubectl kubelet /usr/bin/
+
+# images
+docker pull public.ecr.aws/eks-distro/kubernetes/pause:v1.19.8-eks-1-19-4;\
+docker pull public.ecr.aws/eks-distro/coredns/coredns:v1.8.0-eks-1-19-4;\
+docker pull public.ecr.aws/eks-distro/etcd-io/etcd:v3.4.14-eks-1-19-4;\
+docker tag public.ecr.aws/eks-distro/kubernetes/pause:v1.19.8-eks-1-19-4 public.ecr.aws/eks-distro/kubernetes/pause:3.2;\
+docker tag public.ecr.aws/eks-distro/coredns/coredns:v1.8.0-eks-1-19-4 public.ecr.aws/eks-distro/kubernetes/coredns:1.7.0;\
+docker tag public.ecr.aws/eks-distro/etcd-io/etcd:v3.4.14-eks-1-19-4 public.ecr.aws/eks-distro/kubernetes/etcd:3.4.13-0
+
+# landscape
+landscape-config --computer-title ${NAME} --account-name standalone  --url ${LANDSCAPE_URL} --ping-url ${LANDSCAPE_PING_URL} -p ${REGISTRATION_KEY}
+
+# register
+ua attach ${TOKEN}
+ua enable cis
+ua enable fips
+ua enable fips-updates
+ua status
+
+# kubernetes
+kubeadm init --image-repository public.ecr.aws/eks-distro/kubernetes --kubernetes-version v1.19.8-eks-1-19-4
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=v1.19.8-eks-1-19-4"
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+# kubevip
+kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e "s/strictARP: false/strictARP: true/" | kubectl apply -f - -n kube-system
+kubectl create configmap --namespace kube-system kubevip --from-literal cidr-global=${CIDR}
+kubectl apply -f https://kube-vip.io/manifests/controller.yaml
+kubectl apply -f https://kube-vip.io/manifests/rbac.yaml
+docker run --network host --rm plndr/kube-vip:v0.3.5 manifest daemonset --services --inCluster --arp --interface ${VIP_INTERFACE} | kubectl apply -f -
+
+# olm
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.19.1/install.sh | bash -s v0.19.1
+kubectl create clusterrolebinding --clusterrole=cluster-admin --group system:serviceaccounts:operators operator-admin
+
+# demo
+kubectl apply -f https://anywhere.eks.amazonaws.com/manifests/hello-eks-a.yaml
+kubectl expose deployment hello-eks-a --port=80 --type=LoadBalancer --name=hello-eks-a-lb
+
+# kiosk
+sudo multipass set local.driver=lxd
+sudo multipass set local.bridged-network=mpbr0
+
+sudo snap connect ubuntu-frame:login-session-control
+sudo snap connect wpe-webkit-mir-kiosk:wayland
+sudo snap connect multipass:wayland 
+sudo snap connect multipass:removable-media
+
+sudo snap set ubuntu-frame daemon=true
+sudo snap set wpe-webkit-mir-kiosk daemon=true
+sudo snap set wpe-webkit-mir-kiosk url=${KIOSK_URL}
+
+sudo systemctl status snap.wpe-webkit-mir-kiosk.daemon.service
+
+# cumulus
+docker container create --privileged --restart always --network host --name cumulus -it networkop/cx:4.4.0
+docker container start cumulus

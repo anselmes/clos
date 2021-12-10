@@ -1,0 +1,11 @@
+# netq-agent
+gpg: https://apps3.cumulusnetworks.com/setup/cumulus-apps-deb.pubkey
+repo: "deb [arch=$(dpkg --print-architecture)] https://apps3.cumulusnetworks.com/repos/deb $(lsb_release -cs) netq-latest"
+
+# docker-ce
+gpg: https://download.docker.com/linux/ubuntu/gpg
+repo: "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+# kubernetes
+gpg: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+"deb https://apt.kubernetes.io/ kubernetes-$(lsb_release -cs) main"

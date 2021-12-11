@@ -10,5 +10,4 @@ A `kubectl` operator for cloudos/clos
 
 ```
 kubectl operator install -C -c alpha -n operators clos
-kubectl cloudos init
 ```

@@ -1,0 +1,4 @@
+## Append samples you want in your CSV to this file as resources ##
+resources:
+- cloudos_v1alpha1_cloudos.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

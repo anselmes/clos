@@ -1,0 +1,52 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: clos.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: CloudOS is the Schema for the cloudos API
+      displayName: Cloud OS
+      kind: CloudOS
+      name: cloudos.cloudos.anselmes.com
+      version: v1alpha1
+  description: CloudOS operator
+  displayName: CloudOS
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - clos
+  - cloudos
+  - kubevirt
+  - knative
+  - tekton
+  links:
+  - name: Clos
+    url: https://clos.domain
+  maintainers:
+  - email: schubert@anselm.es
+    name: schubert
+  maturity: alpha
+  provider:
+    name: Schubert Anselme
+    url: https://cl.os.anselmes.com
+  version: 0.0.0

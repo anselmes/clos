@@ -1,0 +1,20 @@
+# permissions for end users to view cloudos.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloudos-viewer-role
+rules:
+- apiGroups:
+  - cloudos.anselmes.com
+  resources:
+  - cloudos
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudos.anselmes.com
+  resources:
+  - cloudos/status
+  verbs:
+  - get

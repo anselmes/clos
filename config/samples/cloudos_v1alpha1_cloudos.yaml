@@ -1,0 +1,6 @@
+apiVersion: cloudos.anselmes.com/v1alpha1
+kind: CloudOS
+metadata:
+  name: cloudos-sample
+spec:
+  # Add fields here
